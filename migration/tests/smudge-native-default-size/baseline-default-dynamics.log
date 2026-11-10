@@ -1,0 +1,11 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sef10ecbd576b73b38aa8738ec68acad0
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+Failed to parse tag cache: No such file or directory
+# Start of painter tests
+# Start of smudge tests
+**
+ERROR:../app/tests/test-painter-smudge-native-default-size.inc:75:void smudge_default_dynamics(): assertion failed (gimp_dynamics_get_linear_value (dynamics, type, &coords, legacy, 1) == expected): (0.00977517107 == 0.00977517107)
+not ok /painter/smudge/default-dynamics - ERROR:../app/tests/test-painter-smudge-native-default-size.inc:75:void smudge_default_dynamics(): assertion failed (gimp_dynamics_get_linear_value (dynamics, type, &coords, legacy, 1) == expected): (0.00977517107 == 0.00977517107)
+Bail out!

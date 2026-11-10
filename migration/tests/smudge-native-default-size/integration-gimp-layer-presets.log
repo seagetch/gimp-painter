@@ -1,0 +1,20 @@
+TAP version 14
+# random seed: R02S93e2f85c90d89471e5d187865cbee8d7
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..12
+# Start of layer-presets tests
+ok 1 /layer-presets/custom_planner_ownership
+ok 2 /layer-presets/malformed_resource_loads
+ok 3 /layer-presets/unknown_filter_stays_inert
+ok 4 /layer-presets/all_bundled_construction
+ok 5 /layer-presets/resource_roundtrip
+ok 6 /layer-presets/reject_without_history_loss
+ok 7 /layer-presets/rollback_after_insert
+ok 8 /layer-presets/callback_rename_keeps_undo_name
+ok 9 /layer-presets/preflight_rejects_changed_target
+ok 10 /layer-presets/ordered_source_edits
+ok 11 /layer-presets/factory_paths
+ok 12 /layer-presets/save_reopen_editable
+# End of layer-presets tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

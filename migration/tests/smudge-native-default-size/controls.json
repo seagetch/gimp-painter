@@ -1,0 +1,26 @@
+{
+  "controls": [
+    {
+      "source": "app/core/gimpdynamicsoutput.c",
+      "test": "default-dynamics",
+      "fixed_sha256": "a8b2aaaab784109ad34b62e216abe28ec7050101d244a975e05f7a80a9bbf0c5",
+      "baseline_sha256": "f779c48a3a7d377a6588ee9c9fb4752fcc60783a00c8e1d834f28368c1345704",
+      "mutant_executable_sha256": "a74c8ae14f81ec36f3c4f7f6a1de9e695f59d4c2da4e1b60ad1dc2934bee0e81",
+      "mutant_exit": -6,
+      "restored_exit": 0,
+      "restored_executable_sha256": "a87600e68ea4d1a16c8ba2ac760a9a6fa89ac7f1799bfcd8b8944f965853d62b",
+      "source_restored": true
+    },
+    {
+      "source": "app/paint/gimppaintoptions.c",
+      "test": "native-default-size",
+      "fixed_sha256": "17a7255b0cc6115cb7db484aba1accafab764f8d8c479b0f31d13eca3d021e94",
+      "baseline_sha256": "64f1316e0a021c4d3c66658c39d79473f9f257534f5937bf2cb148eeba70472b",
+      "mutant_executable_sha256": "dca31b27b8b706b32177c34aee0c0917d4d3317cf28b1bff4dda6b57433b25b4",
+      "mutant_exit": -6,
+      "restored_exit": 0,
+      "restored_executable_sha256": "a87600e68ea4d1a16c8ba2ac760a9a6fa89ac7f1799bfcd8b8944f965853d62b",
+      "source_restored": true
+    }
+  ]
+}

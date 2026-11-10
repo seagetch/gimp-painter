@@ -1,0 +1,45 @@
+TAP version 14
+# random seed: R02S2ee6331b3a97e37bcf7858ef65812ce3
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..31
+# Start of preset-catalog tests
+ok 1 /preset-catalog/preentry-overwrite-array
+ok 2 /preset-catalog/replace-retained-snapshots
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 3 /preset-catalog/two-owners-first-close
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 4 /preset-catalog/two-owners-second-close
+ok 5 /preset-catalog/invalid-allocation-rollback
+# slow test /preset-catalog/invalid-allocation-rollback executed in 0.56 secs
+ok 6 /preset-catalog/nonempty-active-load
+ok 7 /preset-catalog/coherent-release-reentry
+ok 8 /preset-catalog/prepare-owner-close
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 9 /preset-catalog/prepare-other-owner-generation
+ok 10 /preset-catalog/acquisition-close
+ok 11 /preset-catalog/gui-cancel-publish
+ok 12 /preset-catalog/actual-action-empty-publish
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 13 /preset-catalog/gui-close-release
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 14 /preset-catalog/private-size-double-close
+ok 15 /preset-catalog/factory-preparation-null
+ok 16 /preset-catalog/startup-absent-pair
+ok 17 /preset-catalog/selected-real-load-save-reopen
+ok 18 /preset-catalog/actual-initialize-freeze
+ok 19 /preset-catalog/release-then-owner-close
+ok 20 /preset-catalog/array-ref-free-steal
+ok 21 /preset-catalog/unrelated-actions-on-lease-failure
+ok 22 /preset-catalog/failed-gui-allocation-no-freeze
+ok 23 /preset-catalog/required-dialog-startup-failure
+ok 24 /preset-catalog/legacy-epoch-dedup-release32
+ok 25 /preset-catalog/owning-snapshot-survives-close
+ok 26 /preset-catalog/owning-snapshot-allocation-failure
+ok 27 /preset-catalog/empty-preentry-getters
+ok 28 /preset-catalog/failed-preentry-remains-empty
+ok 29 /preset-catalog/empty-snapshot-survives-entry
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 30 /preset-catalog/last-close-new-preentry
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 31 /preset-catalog/new-owner-before-stale-lease-release
+# End of preset-catalog tests

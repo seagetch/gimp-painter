@@ -1,0 +1,81 @@
+ninja: Entering directory `build'
+[1/31] Generating git-version.h.in.1 with a custom command
+[2/31] Generating git-version.h.in.2 with a custom command
+[3/31] Generating git-version.h with a custom command
+[4/31] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/31] Compiling C object app/actions/libappactions.a.p/layer-presets-actions.c.o
+[6/31] Compiling C object app/actions/libappactions.a.p/dialogs-actions.c.o
+[7/31] Compiling C object app/core/libappcore.a.p/gimp-data-factories.c.o
+[8/31] Compiling C object app/core/libappcore.a.p/gimpdynamicsoutput.c.o
+[9/31] Compiling C object app/core/libappcore.a.p/gimp.c.o
+[10/31] Compiling C object app/dialogs/libappdialogs.a.p/dialogs.c.o
+[11/31] Compiling C object app/dialogs/libappdialogs.a.p/about-dialog.c.o
+[12/31] Compiling C object app/display/libappdisplay.a.p/gimpdisplayshell-callbacks.c.o
+[13/31] Compiling C object app/paint/libapppaint.a.p/gimppaintoptions.c.o
+[14/31] Compiling C object app/dialogs/libappdialogs.a.p/preferences-dialog.c.o
+[15/31] Compiling C object app/libapp.a.p/app.c.o
+In file included from ../app/app.c:27:
+/workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/x86_64-linux-gnu/sys/param.h:102:9: warning: "MIN" redefined
+  102 | #define MIN(a,b) (((a)<(b))?(a):(b))
+      |         ^~~
+In file included from /workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:9,
+                 from /workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/glib/gtypes.h:34,
+                 from /workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/glib/galloca.h:34,
+                 from /workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/glib.h:32,
+                 from /workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/gobject/gbinding.h:30,
+                 from /workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/glib-object.h:24,
+                 from ../app/gimp-features.h:4,
+                 from ../app/app.c:19:
+/workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/glib/gmacros.h:942:9: note: this is the location of the previous definition
+  942 | #define MIN(a, b)  (((a) < (b)) ? (a) : (b))
+      |         ^~~
+/workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/x86_64-linux-gnu/sys/param.h:103:9: warning: "MAX" redefined
+  103 | #define MAX(a,b) (((a)>(b))?(a):(b))
+      |         ^~~
+/workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/include/glib-2.0/glib/gmacros.h:939:9: note: this is the location of the previous definition
+  939 | #define MAX(a, b)  (((a) > (b)) ? (a) : (b))
+      |         ^~~
+[16/31] Compiling C object app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o
+../app/widgets/gimplayerpresetview.c: In function ‘gimp_layer_preset_view_new’:
+../app/widgets/gimplayerpresetview.c:393:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  393 |   GimpLayerPresetView *view = g_object_new (GIMP_TYPE_LAYER_PRESET_VIEW,
+      |   ^~~~~~~~~~~~~~~~~~~
+../app/widgets/gimplayerpresetview.c:400:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  400 |   GtkWidget *tree = GTK_WIDGET (gesture_tree (view));
+      |   ^~~~~~~~~
+[17/31] Compiling C object app/libapp.a.p/gimp-features.c.o
+[18/31] Compiling C object app/libapp.a.p/gimp-version.c.o
+[19/31] Compiling C object app/libapp.a.p/presets_gimppresetdescriptor.c.o
+[20/31] Linking static target app/actions/libappactions.a
+[21/31] Linking static target app/dialogs/libappdialogs.a
+[22/31] Linking static target app/core/libappcore.a
+[23/31] Linking static target app/display/libappdisplay.a
+[24/31] Linking static target app/paint/libapppaint.a
+[25/31] Linking static target app/libapp.a
+[26/31] Linking static target app/widgets/libappwidgets.a
+[27/31] Linking target app/tests/painter-smudge-trace
+[28/31] Compiling C++ object app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o
+In file included from ../app/tests/test-painter-smudge-center-matrix.inc:12,
+                 from ../app/tests/test-gimp-painter-smudge.cpp:106:
+../app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc: In function ‘void LegacySmudgeCenter::replace_pixels(const guchar*, const guchar*, guchar*, const guchar*, gint, gint, const gboolean*, gint, gint)’:
+../app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:41:29: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   41 |               for (b = 0; b < alpha; b++)
+      |                           ~~^~~~~~~
+../app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:53:29: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   53 |               for (b = 0; b < alpha; b++)
+      |                           ~~^~~~~~~
+../app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:60:29: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   60 |               for (b = 0; b < alpha; b++)
+      |                           ~~^~~~~~~
+../app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:68:25: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   68 |           for (b = 0; b < alpha; b++)
+      |                       ~~^~~~~~~
+In file included from ../app/tests/test-painter-smudge-center-matrix.inc:13:
+../app/tests/../../migration/fixtures/legacy-smudge-center/opaque-compose.inc: At global scope:
+../app/tests/../../migration/fixtures/legacy-smudge-center/opaque-compose.inc:2:1: warning: no previous declaration for ‘void LegacySmudgeCenter::combine_inten_and_inten_a_pixels(const guchar*, const guchar*, guchar*, const guchar*, guint, const gboolean*, guint, guint)’ [-Wmissing-declarations]
+    2 | combine_inten_and_inten_a_pixels (const guchar   *src1,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[29/31] Linking target app/tests/painter-smudge-ui
+[30/31] Linking target app/tests/gimp-painter-smudge
+[31/31] Linking target app/tests/painter-brush-geometry

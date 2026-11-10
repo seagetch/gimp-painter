@@ -1,0 +1,18 @@
+TAP version 14
+# random seed: R02Sc2685297cdcc90abc614d6d672dcefc9
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..7
+# Start of painter tests
+# Start of geometry tests
+ok 1 /painter/geometry/old-masks
+ok 2 /painter/geometry/options
+# linked radius direct legacy=0 size=27 rebuilt-mask=27x27
+# linked radius direct legacy=1 size=27 rebuilt-mask=27x27
+ok 3 /painter/geometry/defaults
+ok 4 /painter/geometry/provenance
+ok 5 /painter/geometry/cache
+ok 6 /painter/geometry/invalid
+ok 7 /painter/geometry/default-dynamics
+# End of geometry tests
+# End of painter tests

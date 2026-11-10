@@ -28,6 +28,7 @@
 
 #include "paint/gimppaintoptions.h"
 #include "paint/gimppainterbrushgeometry.h"
+#include "paint/gimppaintersmudge.h"
 
 
 #include "gimpcurve.h"
@@ -467,7 +468,11 @@ static gdouble
 gimp_dynamics_output_map_value (GimpCurve *curve, gdouble value,
                                 GimpPaintOptions *options)
 {
-  if (! options || ! gimp_painter_brush_geometry_options (options) ||
+  /* Dedicated Smudge has its own old geometry implementation and therefore
+   * does not set the generic geometry flag, but shares the old neutral curves. */
+  if (! options ||
+      (! gimp_painter_brush_geometry_options (options) &&
+       ! G_TYPE_CHECK_INSTANCE_TYPE (options, GIMP_TYPE_PAINTER_SMUDGE_OPTIONS)) ||
       curve->n_points != 0 || curve->curve_type != GIMP_CURVE_SMOOTH)
     return gimp_curve_map_value (curve, value);
 

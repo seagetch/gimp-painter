@@ -1,0 +1,15 @@
+TAP version 14
+# random seed: R02Sfe0fc7b244ed54143169156945a02c1f
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..6
+# Start of preset-gui-entry tests
+ok 1 /preset-gui-entry/signature-null
+ok 2 /preset-gui-entry/no-op-groups-handle
+Refusing to add non-unique action 'dialogs-layer-presets' to action group 'restored-preset-dialog'
+ok 3 /preset-gui-entry/dialog-metadata
+ok 4 /preset-gui-entry/dialog-owner-callbacks
+ok 5 /preset-gui-entry/preferences-metadata
+ok 6 /preset-gui-entry/preferences-handle
+# End of preset-gui-entry tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

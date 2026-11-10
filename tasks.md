@@ -971,6 +971,7 @@
 | 23.002/native-owner-smudge | [x] | 旧Smudgeを専用native coreと単一Undo・取消しへ接続する | 23.002/native-byte-kernels, 27.009/native-start-preflight | Y/YA/RGB/RGBA48実旧sceneの193record/2952800 bytesがrawとowned経路で完全一致。10 lifecycle群と15source focused sanitizer合格。旧mask丸め/独立blendingを保持。GUI登録・長距離分割・memory admission・全precision/pipe・旧profile移行は別gate |
 | 23.003 | [x] | Smudge の色混合を移植する | 23.002 | 旧 blending-output を再現 |
 | 23.004 | [ ] | Smudge のサイズ変化を処理する | 23.003 | 蓄積 buffer の再配置が一致 |
+| 23.004/native-default-size | [x] | 独立Smudgeの旧neutral dynamicsと既定brush sizeを接続する | 23.003 | native28・geometry7・oncanvas UI26、旧48sceneの2routeとgeneric3route exact、23unit ASan/UBSan、2gate個別red/復元合格。6180曲線値・72生成size、標準Smudge/明示曲線不変。親の全transformed footprintは未完了 |
 | 23.005 | [ ] | Smudge の設定 UI と保存を接続する | 23.004 | 値が描画と往復に反映 |
 | 23.005/native-smudge-tool | [x] | 独立Smudgeの実tool・owner入力queue・1dab継続・設定UIを接続する | 23.002/native-owner-smudge, 27.010/bounded-interpolation | 26実GTK通常/30source focused sanitizer、13core/17source sanitizer合格。2 owned routeで実旧193record/2952800 bytes一致。Undo/取消/Save query・長距離・再入を確認。既存標準S不変、旧profile・generic stroke・全dabメモリ/遅延・paper/pipe等は別gate |
 | 23.006 | [ ] | Smudge の比較試験を実行する | 23.005 | 色境界・透明境界・サイズ変化を比較 |

@@ -1,0 +1,10 @@
+TAP version 14
+# random seed: R02S5dbfcb5d007c006667b8301a5be99f5d
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of painter tests
+# Start of smudge tests
+**
+ERROR:../app/tests/test-painter-smudge-native-default-size.inc:76:void smudge_default_dynamics(): assertion failed (gimp_dynamics_get_linear_value (dynamics, type, &coords, legacy, 1) == expected): (0.00977517107 == 0.00977517107)
+not ok /painter/smudge/default-dynamics - ERROR:../app/tests/test-painter-smudge-native-default-size.inc:76:void smudge_default_dynamics(): assertion failed (gimp_dynamics_get_linear_value (dynamics, type, &coords, legacy, 1) == expected): (0.00977517107 == 0.00977517107)
+Bail out!

@@ -1,0 +1,815 @@
+TAP version 14
+# random seed: R02S8661b9650e984e0a81a68edce241c1d3
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+Failed to parse tag cache: No such file or directory
+1..28
+# Start of painter tests
+# Start of smudge tests
+ok 1 /painter/smudge/reuse-undo
+ok 2 /painter/smudge/cancel
+ok 3 /painter/smudge/dispose
+ok 4 /painter/smudge/start-cancel
+ok 5 /painter/smudge/publication-cancel
+ok 6 /painter/smudge/core-loss
+ok 7 /painter/smudge/image-loss
+ok 8 /painter/smudge/invalid-axes
+ok 9 /painter/smudge/external-edit
+ok 10 /painter/smudge/invalid-vfunc
+ok 11 /painter/smudge/paused-segment
+ok 12 /painter/smudge/nested-native-start
+ok 13 /painter/smudge/unowned-start-refused
+# fixture original brush spacing=20
+# actual positive-pressure native Smudge dabs=4
+# old initial seed variant=0 target=(56,16) expectedR=40 actualR=40
+# initial seed changed native bytes=486
+# fixture original brush spacing=20
+# actual positive-pressure native Smudge dabs=4
+# old initial seed variant=1 target=(56,16) expectedR=40 actualR=40
+# initial seed changed native bytes=486
+# fixture original brush spacing=20
+# actual positive-pressure native Smudge dabs=5
+# old initial seed variant=2 target=(24,16) expectedR=220 actualR=220
+# initial seed changed native bytes=522
+# fixture original brush spacing=20
+# actual positive-pressure native Smudge dabs=4
+# old initial seed variant=3 target=(56,16) expectedR=40 actualR=40
+# initial seed changed native bytes=486
+ok 14 /painter/smudge/initial-zero-opacity
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=1 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=1 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=1 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=1 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=1 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=1 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=1 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=1 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=1 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=1 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=1 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=1 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=1 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=1 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=1 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=3 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=3 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=3 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=3 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=3 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=3 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=3 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=3 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=3 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=3 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=3 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=3 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=3 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=3 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=3 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=0 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=0 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=0 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=1 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=1 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=1 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=1 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=1 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=1 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=1 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=1 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=1 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=1 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=1 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=1 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=1 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=1 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=1 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=3 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=3 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=3 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=3 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=3 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=3 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=3 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=3 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=3 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=3 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=3 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=3 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=3 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=3 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=3 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=17 paper=128 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=10
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=10
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# center scene size=17 paper=128 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=10
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=17 paper=128 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=1 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=1 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=1 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=1 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=1 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=1 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=1 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=1 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=1 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=1 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=1 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=1 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=1 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=1 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=1 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=3 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=3 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=3 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=3 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=3 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=3 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=3 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=3 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=3 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=3 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=3 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=3 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=3 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=3 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=3 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=0 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=0 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=0 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=1 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=1 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=1 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=1 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=1 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=1 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=1 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=1 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=1 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=1 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=1 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=1 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=1 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=1 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=1 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=1 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=1 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=3 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=3 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=3 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=3 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=3 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=3 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=3 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=3 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=3 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=3 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=3 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=3 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=3 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=3 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=3 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=3 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=3 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=3 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# center scene size=18 paper=128 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=9
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=9
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# center scene size=18 paper=128 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=9
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# center scene size=18 paper=128 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0
+# center matrix192 scenes; actual updated centers=1008; opaque alpha only
+ok 15 /painter/smudge/center-matrix
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=17 paper=128 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=0 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=1 size=18 paper=128 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=544
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=544
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=544
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=493
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=1632
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=1632
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=1632
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=0 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=1479
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=544
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=544
+# seed channels=2 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=544
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=493
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=493
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=10 hidden_changed=1632
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=10 hidden_changed=1632
+# seed channels=4 at(70,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=10 hidden_changed=1632
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=1479
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=17 paper=128 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=1479
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=594
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=594
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=594
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=540
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=1782
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=1782
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=1782
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=0 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=1620
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=594
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=594
+# seed channels=2 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=594
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=540
+# seed channels=2 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=2 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=540
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=0 rate=50 callbacks=14 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=0 rate=100 callbacks=14 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=1 rate=0 callbacks=19 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=1 rate=50 callbacks=19 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(0,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=1 rate=100 callbacks=19 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=2 rate=0 callbacks=37 updates=6 outside=9 hidden_changed=1782
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=2 rate=50 callbacks=37 updates=6 outside=9 hidden_changed=1782
+# seed channels=4 at(73,16) clamped(63,16) value=220
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=2 rate=100 callbacks=37 updates=6 outside=9 hidden_changed=1782
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=3 rate=0 callbacks=20 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=3 rate=50 callbacks=20 updates=5 outside=0 hidden_changed=1620
+# seed channels=4 at(-2,16) clamped(0,16) value=40
+# alpha center scene alpha=2 size=18 paper=128 channels=4 entry=3 rate=100 callbacks=20 updates=5 outside=0 hidden_changed=1620
+# alpha matrix192 scenes; actual updated centers=1008; transparent changed hidden bytes=101688
+ok 16 /painter/smudge/alpha-centers
+# 6180 old-sample comparisons; 1986 differ from modern neutral mapping
+ok 17 /painter/smudge/default-dynamics
+**
+ERROR:../app/tests/test-painter-smudge-native-default-size.inc:152:void smudge_native_default_size(): assertion failed (legacy->brush_size == smudge_old_default_size (0, 8.75, 3, 1.7f, 27)): (47 == 23)
+not ok /painter/smudge/native-default-size - ERROR:../app/tests/test-painter-smudge-native-default-size.inc:152:void smudge_native_default_size(): assertion failed (legacy->brush_size == smudge_old_default_size (0, 8.75, 3, 1.7f, 27)): (47 == 23)
+Bail out!

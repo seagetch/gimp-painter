@@ -1,0 +1,10 @@
+TAP version 14
+# random seed: R02S02b15b062f0567afda959262caee22e3
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of painter tests
+# Start of smudge tests
+**
+ERROR:../app/tests/test-painter-smudge-native-default-size.inc:142:void smudge_native_default_size(): assertion failed (legacy->brush_size == expected): (17 == 19)
+not ok /painter/smudge/native-default-size - ERROR:../app/tests/test-painter-smudge-native-default-size.inc:142:void smudge_native_default_size(): assertion failed (legacy->brush_size == expected): (17 == 19)
+Bail out!

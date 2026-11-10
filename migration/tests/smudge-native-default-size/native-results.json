@@ -1,0 +1,124 @@
+{
+  "runs": [
+    {
+      "name": "gimp-painter-smudge",
+      "command": [
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/gimp-painter-smudge"
+      ],
+      "exit_code": 0,
+      "duration": 2.1345769819999987,
+      "log": "final-gimp-painter-smudge.log",
+      "sha256": "2688560fe16222fb200b8b155677b5dc0203953a3ecabc81f1a1dce1561a0b96",
+      "executable_sha256": "a87600e68ea4d1a16c8ba2ac760a9a6fa89ac7f1799bfcd8b8944f965853d62b"
+    },
+    {
+      "name": "painter-brush-geometry",
+      "command": [
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-brush-geometry"
+      ],
+      "exit_code": 0,
+      "duration": 1.4421089610004856,
+      "log": "final-painter-brush-geometry.log",
+      "sha256": "adefe72dc75172587cc545c88ee8249fe3f4bd2b1df7c695939b962ab4df9744",
+      "executable_sha256": "23d845fb2c0e2f33507d0bfdcca3d858c3df8bd7f472dacbe966c0ecfdfd5d35"
+    },
+    {
+      "name": "painter-smudge-ui",
+      "command": [
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-smudge-ui"
+      ],
+      "exit_code": 0,
+      "duration": 13.149002629999814,
+      "log": "final-painter-smudge-ui.log",
+      "sha256": "9bc2b1a0ddfeb63409edaa94587adee25b1a6a3d061fe2289157266d08546da9",
+      "executable_sha256": "b918835cb12ae058eaac514c2da4b005be02fbfd173b28fc314d75b42622b55d"
+    },
+    {
+      "name": "legacy",
+      "command": [
+        "python3",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/compare_smudge_strokes.py",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/fixtures/legacy-smudge/pixels.tsv.gz",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-smudge-trace"
+      ],
+      "exit_code": 0,
+      "duration": 1.9594118000004528,
+      "log": "final-legacy.log",
+      "sha256": "9636e116ed7e6facfa26419e6d6098357afb166e51964f78e7bb3c5f7d9f95e6"
+    },
+    {
+      "name": "owned",
+      "command": [
+        "python3",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/compare_smudge_strokes.py",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/fixtures/legacy-smudge/pixels.tsv.gz",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-smudge-trace",
+        "owned"
+      ],
+      "exit_code": 0,
+      "duration": 1.4683226090000971,
+      "log": "final-owned.log",
+      "sha256": "9636e116ed7e6facfa26419e6d6098357afb166e51964f78e7bb3c5f7d9f95e6"
+    },
+    {
+      "name": "generic-raw",
+      "command": [
+        "python3",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/compare_owned_generic.py",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build",
+        "--family",
+        "smudge",
+        "--route",
+        "raw",
+        "--binary",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-smudge-trace",
+        "--report",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/smudge-native-default-size/generic-raw.json"
+      ],
+      "exit_code": 0,
+      "duration": 1.6115341019994958,
+      "log": "final-generic-raw.log",
+      "sha256": "0610a6531a2c6b2ae939f2c30d20eac6983a69d850c5e10c430f90835cf874bf"
+    },
+    {
+      "name": "generic-path",
+      "command": [
+        "python3",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/compare_owned_generic.py",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build",
+        "--family",
+        "smudge",
+        "--route",
+        "path",
+        "--binary",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-smudge-trace",
+        "--report",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/smudge-native-default-size/generic-path.json"
+      ],
+      "exit_code": 0,
+      "duration": 1.6578171330002078,
+      "log": "final-generic-path.log",
+      "sha256": "de532d5b589c3341380f03e108598232ef6fc451a7edeb69e65e8efeb22382fa"
+    },
+    {
+      "name": "generic-boundary",
+      "command": [
+        "python3",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/compare_owned_generic.py",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build",
+        "--family",
+        "smudge",
+        "--route",
+        "boundary",
+        "--binary",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/build/app/tests/painter-smudge-trace",
+        "--report",
+        "/workspace/scratch/0015fc5d1a03/gimp-smudge-nov10/migration/tests/smudge-native-default-size/generic-boundary.json"
+      ],
+      "exit_code": 0,
+      "duration": 1.4613323470002797,
+      "log": "final-generic-boundary.log",
+      "sha256": "7fdc61df620c1fc438b01fe6cc5f3535ca3348533cc8ae23f166735f143cf2b6"
+    }
+  ]
+}

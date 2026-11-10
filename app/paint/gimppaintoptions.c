@@ -38,6 +38,7 @@
 #include "gimpbrushcore.h"
 #include "gimppaintoptions.h"
 #include "gimppainterbrushgeometry.h"
+#include "gimppaintersmudge.h"
 
 #include "gimp-intl.h"
 
@@ -1223,7 +1224,10 @@ gimp_paint_options_set_default_brush_size (GimpPaintOptions *paint_options,
       gint height;
       gint width;
 
-      if (gimp_painter_brush_geometry_options (paint_options))
+      /* Match the dedicated Smudge renderer's old-dimension scale denominator
+       * without opting its independent implementation into generic geometry. */
+      if (gimp_painter_brush_geometry_options (paint_options) ||
+          G_TYPE_CHECK_INSTANCE_TYPE (paint_options, GIMP_TYPE_PAINTER_SMUDGE_OPTIONS))
         {
           if (! gimp_painter_brush_geometry_size (brush, &width, &height, NULL))
             return;
