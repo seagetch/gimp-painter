@@ -67,13 +67,15 @@ bucket_popup_open_button (GtkWidget *button)
   g_assert_cmpuint (strlen (gtk_label_get_text (GTK_LABEL (label))), >, 0);
   /* Legacy show_over snapshots the button before synchronous show(); it does
    * not promise to track a later scroller allocation. Assert that exact
-   * opening rectangle/edge flip without a tolerance or artificial reanchor. */
+   * opening edge flip plus monitor clamp without a tolerance or artificial reanchor. */
   g_assert_true (realize.captured); g_assert_false (realize.mapped);
   GdkMonitor *monitor = gdk_display_get_monitor_at_point (gtk_widget_get_display (button), realize.left, realize.top);
   GdkRectangle rect; gdk_monitor_get_geometry (monitor, &rect);
   gint x = realize.left, y = realize.top + realize.anchor_height, actual_x, actual_y;
   if (x + realize.width > rect.x + rect.width) x = realize.left + realize.anchor_width - realize.width;
   if (y + realize.height > rect.y + rect.height) y = realize.top - realize.height;
+  x = CLAMP (x, rect.x, MAX (rect.x, rect.x + rect.width - realize.width));
+  y = CLAMP (y, rect.y, MAX (rect.y, rect.y + rect.height - realize.height));
   gtk_window_get_position (GTK_WINDOW (actual), &actual_x, &actual_y);
   g_assert_cmpint (actual_x, ==, x); g_assert_cmpint (actual_y, ==, y);
   gint later_x, later_y; GtkAllocation later; gtk_widget_get_allocation (button, &later);

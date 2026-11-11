@@ -566,6 +566,8 @@ transform_popup_assert_anchor (GtkWidget *popup, GtkWidget *button,
   gint x = realize->left, y = realize->top + realize->anchor_height, actual_x, actual_y;
   if (x + realize->width > rect.x + rect.width) x = realize->left + realize->anchor_width - realize->width;
   if (y + realize->height > rect.y + rect.height) y = realize->top - realize->height;
+  x = CLAMP (x, rect.x, MAX (rect.x, rect.x + rect.width - realize->width));
+  y = CLAMP (y, rect.y, MAX (rect.y, rect.y + rect.height - realize->height));
   gtk_window_get_position (GTK_WINDOW (popup), &actual_x, &actual_y);
   g_assert_cmpint (actual_x, ==, x); g_assert_cmpint (actual_y, ==, y);
   GtkAllocation allocation; gtk_widget_get_allocation (button, &allocation);

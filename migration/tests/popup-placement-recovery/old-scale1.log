@@ -1,0 +1,9 @@
+TAP version 14
+# random seed: R02S79c54a211e18b1ed83f6c05e3a5ace4f
+# Start of popup-placement tests
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# neither-side scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,-482 expected=432,0
+**
+ERROR:app/tests/test-popup-placement-recovery.cpp:54:void run_case(const char*, double, double, double, double, bool, bool, bool): assertion failed (y == expected_y): (-482 == 0)
+not ok /popup-placement/neither-side - ERROR:app/tests/test-popup-placement-recovery.cpp:54:void run_case(const char*, double, double, double, double, bool, bool, bool): assertion failed (y == expected_y): (-482 == 0)
+Bail out!

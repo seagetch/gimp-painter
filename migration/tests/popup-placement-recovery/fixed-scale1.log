@@ -1,0 +1,28 @@
+TAP version 14
+# random seed: R02Sc261188c46a120e6c8df1bc4aedd870b
+1..9
+# Start of popup-placement tests
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# neither-side scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,0 expected=432,0
+ok 1 /popup-placement/neither-side
+# slow test /popup-placement/neither-side executed in 0.60 secs
+# below scale=1 anchor=108,96 preferred=218x386 window=218x386 actual=108,130 expected=108,130
+ok 2 /popup-placement/below
+# above scale=1 anchor=108,1728 preferred=218x386 window=218x386 actual=108,1342 expected=108,1342
+ok 3 /popup-placement/above
+# right-edge scale=1 anchor=972,960 preferred=758x386 window=758x386 actual=291,994 expected=291,994
+ok 4 /popup-placement/right-edge
+# oversized scale=1 anchor=432,960 preferred=1298x2306 window=1298x2306 actual=0,0 expected=0,0
+ok 5 /popup-placement/oversized
+# preferred-not-window-size scale=1 anchor=540,960 preferred=218x386 window=1080x1920 actual=540,994 expected=540,994
+ok 6 /popup-placement/preferred-not-window-size
+ok 7 /popup-placement/destroy-on-map
+# repeat scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,0 expected=432,0
+# repeat scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,0 expected=432,0
+# repeat scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,0 expected=432,0
+# repeat scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,0 expected=432,0
+ok 8 /popup-placement/repeat
+# slow test /popup-placement/repeat executed in 0.61 secs
+# outside-cancel scale=1 anchor=432,960 preferred=434x1442 window=434x1442 actual=432,0 expected=432,0
+ok 9 /popup-placement/outside
+# End of popup-placement tests

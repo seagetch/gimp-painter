@@ -1,0 +1,9 @@
+TAP version 14
+# random seed: R02S8e446ebee8eccd49948e46d655aa4382
+# Start of popup-placement tests
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# preferred-not-window-size scale=1 anchor=540,960 preferred=218x386 window=1080x1920 actual=0,0 expected=540,994
+**
+ERROR:app/tests/test-popup-placement-recovery.cpp:54:void run_case(const char*, double, double, double, double, bool, bool, bool): assertion failed (x == expected_x): (0 == 540)
+not ok /popup-placement/preferred-not-window-size - ERROR:app/tests/test-popup-placement-recovery.cpp:54:void run_case(const char*, double, double, double, double, bool, bool, bool): assertion failed (x == expected_x): (0 == 540)
+Bail out!

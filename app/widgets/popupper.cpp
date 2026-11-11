@@ -307,7 +307,14 @@ void gimp_painter_popup_show_over (GtkWidget *popup, GtkWidget *anchor)
     gint x = left, y = top + allocation.height;
     if (x + natural.width > rect.x + rect.width) x = left + allocation.width - natural.width;
     if (y + natural.height > rect.y + rect.height) y = top - natural.height;
-    /* Exact 2.8 bottom-left edge-flipping policy; not WM centering. */
+    /* Keep the bottom-left edge preference, but a popup can fit the monitor
+     * without fitting either side of its anchor.  Do not leave that popup
+     * above/left of the monitor after flipping.  An oversized popup is pinned
+     * to the monitor origin; shrinking its contents is a separate policy. */
+    x = natural.width <= rect.width ?
+      std::max (rect.x, std::min (x, rect.x + rect.width - natural.width)) : rect.x;
+    y = natural.height <= rect.height ?
+      std::max (rect.y, std::min (y, rect.y + rect.height - natural.height)) : rect.y;
     gtk_window_move (GTK_WINDOW (popup), x, y);
     if (active (G_OBJECT (popup))) gtk_widget_show (popup);
   });
